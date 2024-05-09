@@ -41,8 +41,13 @@ void MainFrame::FillTodoListPanel() {
 }
 
 void MainFrame::BindTodoListButtons() {
+    std::map<int, wxCheckBox*> checkboxes = m_todoListPanel->GetTodoCheckboxes();
     std::map<int, wxButton*> edit_buttons = m_todoListPanel->GetEditButtons();
     std::map<int, wxButton*> delete_buttons = m_todoListPanel->GetDeleteButtons();
+
+    for (auto it = checkboxes.begin(); it != checkboxes.end(); ++it) {
+        it->second->Bind(wxEVT_CHECKBOX, &MainFrame::OnCheckboxTodo, this);
+    }
 
     for (auto it = edit_buttons.begin(); it != edit_buttons.end(); ++it) {
         it->second->Bind(wxEVT_BUTTON, &MainFrame::OnEditTodo, this);
@@ -51,6 +56,25 @@ void MainFrame::BindTodoListButtons() {
     for (auto it = delete_buttons.begin(); it != delete_buttons.end(); ++it) {
         it->second->Bind(wxEVT_BUTTON, &MainFrame::OnDeleteTodo, this);
     }
+}
+
+void MainFrame::OnCheckboxTodo(wxCommandEvent& event) {
+    std::unordered_map<int, int>* todo_button_map = m_todoListPanel->GetTodoButtonMap();
+    int checkbox_id = event.GetId();
+    int todo_id = todo_button_map->at(checkbox_id);
+    std::cout << "Clicked checkbox todo with ID: " << todo_id << std::endl;
+    Todo todo = m_todoController.Get(todo_id);
+
+    // TODO redo the status thing, guess a completed boolean field would be better
+    if (todo.status == "completed") {
+        todo.status = "pending";
+    } else {
+        todo.status = "completed";
+    }
+
+    m_todoController.Update(todo);
+
+    FillTodoListPanel();
 }
 
 void MainFrame::OnEditTodo(wxCommandEvent& event) {

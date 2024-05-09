@@ -20,6 +20,7 @@ class MainFrame : public wxFrame {
     void FillTodoListPanel();
     void LoadTodoAddPanel();
 
+    void OnCheckboxTodo(wxCommandEvent& event);
     void OnEditTodo(wxCommandEvent& event);
     void OnAddTodo(wxCommandEvent& event);
     void OnDeleteTodo(wxCommandEvent& event);

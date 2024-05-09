@@ -24,7 +24,10 @@ TodoController::TodoController() {
     m_database->Connect(Config::DB_FILE);
 }
 
-TodoController::~TodoController() {}
+TodoController::~TodoController() {
+    m_database->Disconnect();
+    delete m_database;
+}
 
 void TodoController::Add(Todo todo) {
     int id = m_database->AddTodo(todo);

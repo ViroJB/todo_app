@@ -38,7 +38,8 @@ int SqliteDB::AddTodo(Todo todo) {
 }
 
 bool SqliteDB::UpdateTodo(Todo todo) {
-    std::string sql = "UPDATE todo SET title = '" + todo.title + "', description = '" + todo.description +
+    // TODO update everything
+    std::string sql = "UPDATE todo SET title = '" + todo.title + "', description = '" + todo.description + "', status = '" + todo.status + "', updated_at = '" + todo.updated_at +
                       "' WHERE id = " + std::to_string(todo.id) + ";";
     char* err_msg;
     int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);

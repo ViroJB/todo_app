@@ -3,7 +3,6 @@
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/event.h>
-#include <fmt/core.h>
 
 #include "../config/config.h"
 #include "../database/sqlite_db.h"

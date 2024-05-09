@@ -41,9 +41,9 @@ class Setup {
         }
 
         std::map<int, Todo> sample_todos;
-        sample_todos[1] = {1, "Sample Todo EINS", "This is a sample todo 1", "Pending", "2021-01-01", "2021-01-01", "2021-01-01"};
-        sample_todos[2] = {2, "Sample Todo ZWEI", "This is a sample todo 2", "Pending", "2021-01-01", "2021-01-01", "2021-01-01"};
-        sample_todos[3] = {3, "Sample Todo DREI", "This is a sample todo 3", "Pending", "2021-01-01", "2021-01-01", "2021-01-01"};
+        sample_todos[1] = {1, "Sample Todo EINS", "This is a sample todo 1", "completed", "2021-01-01", "2021-01-01", "2021-01-01"};
+        sample_todos[2] = {2, "Sample Todo ZWEI", "This is a sample todo 2", "pending", "2021-01-01", "2021-01-01", "2021-01-01"};
+        sample_todos[3] = {3, "Sample Todo DREI", "This is a sample todo 3", "pending", "2021-01-01", "2021-01-01", "2021-01-01"};
 
         for (auto& [id, todo] : sample_todos) {
             std::string sql = "INSERT INTO todo (title, description, status, due_date, created_at, updated_at) VALUES ('" + todo.title +

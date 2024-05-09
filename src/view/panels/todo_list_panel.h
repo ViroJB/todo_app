@@ -14,11 +14,13 @@ class TodoListPanel : public wxPanel {
     std::unordered_map<int, int>* GetTodoButtonMap() { return &m_todo_button_map; }
     std::map<int, wxButton*> GetEditButtons() { return m_edit_buttons; }
     std::map<int, wxButton*> GetDeleteButtons() { return m_delete_buttons; }
+    std::map<int, wxCheckBox*> GetTodoCheckboxes() { return m_todo_checkboxes; }
 
    private:
     wxBoxSizer* m_sizer;
     wxScrolledWindow* m_scrolled_window;
     wxBoxSizer* m_scrolled_window_sizer;
+    std::map<int, wxCheckBox*> m_todo_checkboxes;
     std::map<int, wxButton*> m_edit_buttons;
     std::map<int, wxButton*> m_delete_buttons;
     std::vector<wxStaticText*> m_todo_labels;

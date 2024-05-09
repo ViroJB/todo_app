@@ -13,7 +13,6 @@ link_directories(C:\\Development\\Tools\\vcpkg\\installed\\x64-windows\\lib)
 find_package(wxWidgets CONFIG REQUIRED)
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
 
 # create seperate cmakelist files for src and tests dirs and see move the stuff there, see how it goes
 # add_subdirectory(src)
@@ -32,7 +31,7 @@ add_executable(todo_app
     src/view/panels/todo_edit_panel.cpp
 )
 
-target_link_libraries(todo_app PRIVATE wx::core wx::base fmt::fmt)
+target_link_libraries(todo_app PRIVATE wx::core wx::base)
 target_link_libraries(todo_app PRIVATE unofficial::sqlite3::sqlite3)
 
 enable_testing()
