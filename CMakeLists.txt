@@ -29,6 +29,7 @@ add_executable(todo_app
     src/view/panels/todo_list_panel.cpp
     src/view/panels/todo_add_panel.cpp
     src/view/panels/todo_edit_panel.cpp
+    src/view/status_bar/status_bar.cpp
 )
 
 target_link_libraries(todo_app PRIVATE wx::core wx::base)

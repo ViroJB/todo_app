@@ -1,7 +1,6 @@
 #include "main_frame.h"
 
 // TODO move all the click handler methods to a separate class, like a event handler something?
-// TODO so, we need a checkbox for each todo item...
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(NULL, wxID_ANY, title, pos, size) {
     m_mainMenu = new MainMenu(this);
@@ -30,6 +29,10 @@ void MainFrame::LoadInterface() {
     m_mainPanelRightSizer = new wxBoxSizer(wxVERTICAL);
     m_mainPanelRightSizer->SetMinSize(300, 0);
     m_mainPanelRight->SetSizer(m_mainPanelRightSizer);
+
+    m_status_bar = new StatusBar(this);
+
+    SetStatusBar(m_status_bar);
 }
 
 void MainFrame::FillTodoListPanel() {
@@ -65,7 +68,7 @@ void MainFrame::OnCheckboxTodo(wxCommandEvent& event) {
     std::cout << "Clicked checkbox todo with ID: " << todo_id << std::endl;
     Todo todo = m_todoController.Get(todo_id);
 
-    // TODO redo the status thing, guess a completed boolean field would be better
+    // TODO redo the status thing, guess a completed boolean field would be enough
     if (todo.status == "completed") {
         todo.status = "pending";
     } else {
@@ -115,7 +118,7 @@ void MainFrame::OnDeleteTodo(wxCommandEvent& event) {
 
 void MainFrame::LoadTodoAddPanel() {
     m_mainPanelRightSizer->Clear(true);
-    m_addTodoPanel = new TodoAddPanel(m_mainPanelRight);
+    m_addTodoPanel = new TodoAddPanel(m_mainPanelRight, m_todoController.GetAllCategories());
     m_mainPanelRightSizer->Add(m_addTodoPanel, 1, wxEXPAND | wxALL, 10);
 
     // TODO bind buttons
@@ -141,6 +144,10 @@ void MainFrame::OnAddTodo(wxCommandEvent& event) {
     Todo todo;
     todo.title = m_addTodoPanel->GetTitleTextCtrl()->GetValue().ToStdString();
     todo.description = m_addTodoPanel->GetDescriptionTextCtrl()->GetValue().ToStdString();
+    // check if category is empty and if not, get id by name and fill it in
+    todo.category_name = m_addTodoPanel->GetCategoryComboBox()->GetStringSelection().ToStdString();
+    todo.category = m_todoController.GetCategoryByName(todo.category_name);
+
     todo.created_at = std::to_string(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()));
     todo.updated_at = std::to_string(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()));
     todo.status = "pending";

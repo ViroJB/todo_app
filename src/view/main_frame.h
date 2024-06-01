@@ -5,11 +5,13 @@
 #include <vector>
 
 #include "main_menu/main_menu.h"
+#include "status_bar/status_bar.h"
 #include "../todo/todo_controller.h"
 #include "../config/config.h"
 #include "panels/todo_add_panel.h"
 #include "panels/todo_edit_panel.h"
 #include "panels/todo_list_panel.h"
+
 
 class MainFrame : public wxFrame {
    public:
@@ -32,6 +34,7 @@ class MainFrame : public wxFrame {
     TodoController m_todoController;
 
     MainMenu* m_mainMenu;
+    StatusBar* m_status_bar;
 
     TodoListPanel* m_todoListPanel;
     TodoAddPanel* m_addTodoPanel;

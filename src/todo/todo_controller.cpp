@@ -42,6 +42,14 @@ void TodoController::Remove(int id) {
     std::cout << "Deleted Todo ID: " << id << std::endl;
 }
 
+std::map<int, std::string> TodoController::GetAllCategories() {
+    return m_database->GetAllCategories();
+}
+
+int TodoController::GetCategoryByName(std::string name) {
+    return m_database->GetCategoryByName(name);
+}
+
 void TodoController::Update(Todo todo) {
     m_database->UpdateTodo(todo);
     m_todos[todo.id] = todo;

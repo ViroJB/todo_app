@@ -16,4 +16,7 @@ class Database {
 
     virtual Todo GetTodoById(int id) = 0;
     virtual std::map<int, Todo> GetAllTodos() = 0;
+
+    virtual std::map<int, std::string> GetAllCategories() = 0;
+    virtual int GetCategoryByName(std::string name) = 0;
 };

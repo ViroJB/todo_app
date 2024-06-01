@@ -27,7 +27,7 @@ void TodoListPanel::PopulateTodoList(std::map<int, Todo>* todos) {
         } else {
             checkbox_button->SetValue(false);
         }
-        wxStaticText* label = new wxStaticText(m_scrolled_window, wxID_ANY, std::to_string(todo.id) + ". " + todo.title);
+        wxStaticText* label = new wxStaticText(m_scrolled_window, wxID_ANY, std::to_string(todo.id) + ". " + todo.title +  " (" + todo.category_name + ")");
         wxButton* edit_button = new wxButton(m_scrolled_window, wx_id++, "Edit");
         wxButton* delete_button = new wxButton(m_scrolled_window, wx_id++, "Delete");
 

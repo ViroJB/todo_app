@@ -21,6 +21,9 @@ class TodoController {
     std::map<int, Todo>* GetAll();
     void Save();
 
+    std::map<int, std::string> GetAllCategories();
+    int GetCategoryByName(std::string name);
+
    private:
     std::map<int, Todo> m_todos;
     Database* m_database;
