@@ -1,7 +1,15 @@
 {
+  "name": "vtodo",
+  "version": "2.0.0",
   "dependencies": [
+    "fmt",
     "sqlite3",
-    "wxwidgets",
-    "gtest"
+    "gtest",
+    "glfw3",
+    "opengl",
+    {
+      "name": "imgui",
+      "features": ["glfw-binding", "opengl3-binding"]
+    }
   ]
 }
