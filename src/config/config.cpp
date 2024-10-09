@@ -1,6 +1,5 @@
 #include "config.h"
 
-
 namespace TodoApp {
 
 const std::string Config::APP_NAME = "ToDo App";

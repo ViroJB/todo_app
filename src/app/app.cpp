@@ -12,11 +12,21 @@ bool App::init() {
 
     TodoController todoController;
     auto todos = todoController.GetAll();
-    for (const auto& [id ,todo ]: *todos) {
+    for (const auto& [id, todo] : *todos) {
         fmt::print("todo: {}\n", todo.title);
     }
 
     return true;
 }
 
+void App::mainLoop() {
+    Gui gui;
+    gui.init();
+    const auto window = gui.getWindow();
+
+    while (!glfwWindowShouldClose(window)) {
+        gui.render();
+    }
 }
+
+}  // namespace TodoApp

@@ -2,7 +2,6 @@
 
 #include <string>
 
-
 namespace TodoApp {
 
 class Config {
