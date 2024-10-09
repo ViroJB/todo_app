@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
-#include "../src/database/sqlite_db.h"
+#include "database/sqlite_db.h"
 
 class SqliteDBTest : public ::testing::Test {
 protected:
     // Member variables accessible to all tests
-    SqliteDB db;
+ TodoApp::SqliteDB db;
 
     // Set up function, called before each test
     void SetUp() override {
@@ -23,9 +23,10 @@ protected:
 TEST_F(SqliteDBTest, TestAllFunctions) {
     // Test Connect function
     EXPECT_TRUE(db.Connect("test.db"));
+    TodoApp::Setup::Run("test.db");
 
     // Test AddTodo function
-    Todo todo1;
+    TodoApp::Todo todo1;
     todo1.title = "Test Todo 1";
     todo1.description = "Test Description 1";
     todo1.status = "Pending";
@@ -35,19 +36,19 @@ TEST_F(SqliteDBTest, TestAllFunctions) {
     ASSERT_NE(id1, -1); // Check if id is valid
 
     // Test UpdateTodo function
-    Todo todo2;
+    TodoApp::Todo todo2;
     todo2.id = id1;
     todo2.title = "Updated Test Todo";
     todo2.description = "Updated Test Description";
     ASSERT_TRUE(db.UpdateTodo(todo2));
 
     // Test GetTodoById function
-    Todo fetchedTodo = db.GetTodoById(id1);
+    TodoApp::Todo fetchedTodo = db.GetTodoById(id1);
     EXPECT_EQ(fetchedTodo.title, todo2.title);
     EXPECT_EQ(fetchedTodo.description, todo2.description);
 
     // Test GetAllTodos function
-    std::map<int, Todo> allTodos = db.GetAllTodos();
+    std::map<int, TodoApp::Todo> allTodos = db.GetAllTodos();
     ASSERT_GT(allTodos.size(), 0); // Ensure there are todos in the database
 
     // Test DeleteTodoById function

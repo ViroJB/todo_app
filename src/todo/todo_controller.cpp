@@ -12,6 +12,9 @@
 // performance is absolutely not an issue here, so we can do whatever we want
 // or leave it as is? like its doing nothing?
 
+
+namespace TodoApp {
+
 TodoController::TodoController() {
     // NOTE gotta go with the setup here i guess, for now?
     if (!std::filesystem::exists(Config::DB_FILE)) {
@@ -64,3 +67,5 @@ std::map<int, Todo>* TodoController::GetAll() {
 }
 
 void TodoController::Save() {}
+
+}

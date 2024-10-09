@@ -8,6 +8,9 @@
 #include "database.h"
 #include "setup.h"
 
+
+namespace TodoApp {
+
 class SqliteDB : public Database {
    public:
     SqliteDB();
@@ -29,3 +32,5 @@ class SqliteDB : public Database {
    private:
     sqlite3* m_db;
 };
+
+}

@@ -2,6 +2,9 @@
 
 #include <string>
 
+
+namespace TodoApp {
+
 class Config {
    public:
     static const std::string APP_NAME;
@@ -12,3 +15,5 @@ class Config {
     static const int APP_MIN_HEIGHT;
     static const char* DB_FILE;
 };
+
+}

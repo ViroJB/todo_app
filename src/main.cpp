@@ -1,8 +1,8 @@
 #include "app/app.h"
 
 int main() {
-    App app;
-    app.OnInit();
+    TodoApp::App app;
+    app.init();
 
     return 0;
 }

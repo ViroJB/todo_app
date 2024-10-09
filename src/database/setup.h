@@ -5,10 +5,12 @@
 #include <iostream>
 #include <map>
 
+namespace TodoApp {
+
 class Setup {
    public:
     Setup() {}
-    void Run(const char* db_file) {
+    static void Run(const char* db_file) {
         sqlite3* m_db;
         int rc = sqlite3_open(db_file, &m_db);
         if (rc) {
@@ -87,9 +89,10 @@ class Setup {
         sample_todos.push_back(todo4);
 
         for (auto& todo : sample_todos) {
-            std::string sql = "INSERT INTO todo (category, title, description, status, due_date, created_at, updated_at) VALUES ('" +
-                              std::to_string(todo.category) + "', '" + todo.title + "', '" + todo.description + "', '" + todo.status +
-                              "', '" + todo.due_date + "', '" + todo.created_at + "', '" + todo.updated_at + "');";
+            std::string sql =
+                "INSERT INTO todo (category, title, description, status, due_date, created_at, updated_at) VALUES ('" +
+                std::to_string(todo.category) + "', '" + todo.title + "', '" + todo.description + "', '" + todo.status +
+                "', '" + todo.due_date + "', '" + todo.created_at + "', '" + todo.updated_at + "');";
             char* err_msg;
             int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
             if (rc != SQLITE_OK) {
@@ -101,3 +104,4 @@ class Setup {
         }
     }
 };
+}  // namespace TodoApp

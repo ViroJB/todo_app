@@ -5,6 +5,9 @@
 
 #include "../todo/todo.h"
 
+
+namespace TodoApp {
+
 class Database {
    public:
     virtual bool Connect(const char* db_file) = 0;
@@ -20,3 +23,5 @@ class Database {
     virtual std::map<int, std::string> GetAllCategories() = 0;
     virtual int GetCategoryByName(std::string name) = 0;
 };
+
+}

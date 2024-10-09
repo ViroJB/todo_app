@@ -9,6 +9,8 @@
 #include "todo.h"
 
 
+namespace TodoApp {
+
 class TodoController {
    public:
     TodoController();
@@ -28,3 +30,5 @@ class TodoController {
     std::map<int, Todo> m_todos;
     Database* m_database;
 };
+
+}

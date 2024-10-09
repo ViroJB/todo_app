@@ -1,5 +1,8 @@
 #include "sqlite_db.h"
 
+
+namespace TodoApp {
+
 SqliteDB::SqliteDB() {}
 
 SqliteDB::~SqliteDB() { sqlite3_close(m_db); }
@@ -178,4 +181,6 @@ std::map<int, Todo> SqliteDB::GetAllTodos() {
     sqlite3_finalize(stmt);
     std::cout << "Fetched all todos, size: " << todos.size() << std::endl;
     return todos;
+}
+
 }

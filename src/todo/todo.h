@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace TodoApp {
+
 struct Todo {
     int id = -1;
     int category = -1;
@@ -13,3 +15,5 @@ struct Todo {
     std::string updated_at = "";
     std::string category_name = "";
 };
+
+}

@@ -12,6 +12,8 @@ set(SOURCES
         src/database/sqlite_db.cpp
         src/config/config.cpp
         src/todo/todo_controller.cpp
+        src/gui/gui.cpp
+        src/gui/gui.hpp
 )
 
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
