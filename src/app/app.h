@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4996) // NOTE this is here, because wxwidgets throws alot of warnings otherwise... sucks
 
 #include <iostream>
 #include <wx/wx.h>
