@@ -12,7 +12,7 @@ namespace TodoApp {
 class App {
    public:
     bool init();
-    void mainLoop();
+    void run();
 };
 
 }  // namespace TodoApp

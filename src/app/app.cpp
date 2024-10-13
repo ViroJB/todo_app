@@ -1,14 +1,15 @@
 #include "app.h"
 
-// TODO add categories to todo list, edit panel
-// TODO add tabs for completed and overdue tasks.
-// TODO show uncompleted tasks in the main tab by default and ordered by category.
-// TODO now: minimize to tray, notifications, ect.
+#include "commands/command_handler.hpp"
 
 namespace TodoApp {
 
 bool App::init() {
-    fmt::print("hellooo\n");
+    CommandHandler commandHandler;
+    commandHandler.queueCommand<ExampleCommand>(5, 5);
+    commandHandler.queueCommand<ExampleCommand>(10, 5);
+    commandHandler.queueCommand<ExampleCommand>();
+    commandHandler.executeCommands();
 
     TodoController todoController;
     auto todos = todoController.GetAll();
@@ -19,7 +20,7 @@ bool App::init() {
     return true;
 }
 
-void App::mainLoop() {
+void App::run() {
     Gui gui;
     gui.init();
     const auto window = gui.getWindow();

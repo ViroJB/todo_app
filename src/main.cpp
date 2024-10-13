@@ -3,7 +3,7 @@
 int main() {
     TodoApp::App app;
     app.init();
-    app.mainLoop();
+    app.run();
 
     return 0;
 }

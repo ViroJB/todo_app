@@ -23,9 +23,11 @@ class Gui {
    public:
     void init();
     static void glfwErrorCallback(int error, const char* description);
-    void render() const;
+    void render();
+    void startFrame();
+    void endFrame();
     GLFWwindow* getWindow() const;
-    void enableDarkModeForWindow(HWND hwnd);
+    void enableDarkModeForWindow();
 
    private:
     GLFWwindow* m_window = nullptr;

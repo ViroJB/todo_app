@@ -14,6 +14,16 @@ set(SOURCES
         src/todo/todo_controller.cpp
         src/gui/gui.cpp
         src/gui/gui.hpp
+        src/commands/command_handler.cpp
+        src/commands/command_handler.hpp
+        src/gui/window_todo_list.cpp
+        src/gui/window_todo_list.hpp
+        src/gui/window_category_list.cpp
+        src/gui/window_category_list.hpp
+        src/gui/window_add_todo.cpp
+        src/gui/window_add_todo.hpp
+        src/gui/gui_style.cpp
+        src/gui/gui_style.hpp
 )
 
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
