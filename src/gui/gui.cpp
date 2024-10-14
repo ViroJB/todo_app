@@ -33,23 +33,33 @@ void Gui::init() {
     // style stuff
     // needed for dark mode
     enableDarkModeForWindow();
-    GuiStyle style;
-    style.load();
+    m_style.load();
+
+    m_todoController = std::make_shared<TodoController>();
 }
 
 void Gui::render() {
     glfwPollEvents();
+    // close on esc
+    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+    }
     startFrame();
 
-    TodoController controller;
-    WindowCategoryList categoryList;
-    categoryList.draw();
-    WindowTodoList windowTodoList;
-    windowTodoList.draw(controller.GetAll());
-    WindowAddTodo addTodo;
-    addTodo.draw();
+    WindowCategoryList::draw(m_todoController->GetAllCategories(), m_style);
+    WindowTodoList::draw(m_todoController->GetAll(), m_style);
 
-    ImGui::ShowDemoWindow();
+    // temp, needs to be gone asap!
+    auto list = m_todoController->GetAllCategories();
+    std::vector<const char*> categories;
+    categories.reserve(list.size());
+    for (const auto& item : list) {
+        categories.push_back(item.second.c_str());
+    }
+
+    WindowAddTodo::draw(categories, m_style);
+
+    // ImGui::ShowDemoWindow();
     endFrame();
 }
 
@@ -71,9 +81,7 @@ void Gui::endFrame() {
     glfwSwapBuffers(m_window);
 }
 
-GLFWwindow* Gui::getWindow() const {
-    return m_window;
-}
+GLFWwindow* Gui::getWindow() const { return m_window; }
 
 void Gui::glfwErrorCallback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
@@ -83,6 +91,15 @@ void Gui::enableDarkModeForWindow() {
     BOOL useDarkMode = TRUE;
     HWND hwnd = glfwGetWin32Window(m_window);
     DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &useDarkMode, sizeof(useDarkMode));
+}
+
+std::vector<const char*> Gui::convertList(std::vector<std::string>& list) {
+    std::vector<const char*> charArray;
+    charArray.reserve(list.size());  // reserve memory for performance
+    for (const auto& str : list) {
+        charArray.push_back(str.c_str());  // use c_str() to get const char*
+    }
+    return charArray;
 }
 
 }  // namespace TodoApp

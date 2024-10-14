@@ -4,11 +4,13 @@
 
 #include <map>
 
+#include "gui_style.hpp"
+
 namespace TodoApp {
 
 class WindowTodoList {
    public:
-    void draw(std::map<int, Todo>* todoList);
+    static void draw(std::map<int, Todo>* todoList, GuiStyle style);
 };
 
 }  // namespace TodoApp

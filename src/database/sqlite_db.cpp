@@ -35,7 +35,7 @@ std::map<int, std::string> SqliteDB::GetAllCategories() {
         }
     }
     sqlite3_finalize(stmt);
-    std::cout << "Fetched all categories, size: " << categories.size() << std::endl;
+    // std::cout << "Fetched all categories, size: " << categories.size() << std::endl;
     return categories;
 }
 
@@ -179,7 +179,7 @@ std::map<int, Todo> SqliteDB::GetAllTodos() {
         }
     }
     sqlite3_finalize(stmt);
-    std::cout << "Fetched all todos, size: " << todos.size() << std::endl;
+    // std::cout << "Fetched all todos, size: " << todos.size() << std::endl;
     return todos;
 }
 

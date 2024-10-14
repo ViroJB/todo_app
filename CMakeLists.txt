@@ -15,15 +15,10 @@ set(SOURCES
         src/gui/gui.cpp
         src/gui/gui.hpp
         src/commands/command_handler.cpp
-        src/commands/command_handler.hpp
         src/gui/window_todo_list.cpp
-        src/gui/window_todo_list.hpp
         src/gui/window_category_list.cpp
-        src/gui/window_category_list.hpp
         src/gui/window_add_todo.cpp
-        src/gui/window_add_todo.hpp
         src/gui/gui_style.cpp
-        src/gui/gui_style.hpp
 )
 
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
@@ -32,6 +27,10 @@ find_package(fmt CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+
+file(COPY "${CMAKE_SOURCE_DIR}/fonts" DESTINATION "${CMAKE_BINARY_DIR}/Debug")
+file(COPY "${CMAKE_SOURCE_DIR}/fonts" DESTINATION "${CMAKE_BINARY_DIR}/Release")
 
 add_executable(todo_app
         src/main.cpp
@@ -41,6 +40,7 @@ add_executable(todo_app
 target_link_libraries(todo_app PRIVATE unofficial::sqlite3::sqlite3)
 target_link_libraries(todo_app PRIVATE ${OPENGL_LIBRARIES})
 target_link_libraries(todo_app PRIVATE fmt::fmt)
+target_link_libraries(todo_app PRIVATE spdlog::spdlog)
 target_link_libraries(todo_app PRIVATE imgui::imgui)
 target_link_libraries(todo_app PRIVATE glfw)
 target_link_libraries(todo_app PRIVATE OpenGL::GL)

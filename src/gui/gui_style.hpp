@@ -1,11 +1,27 @@
 #pragma once
+#include <map>
+
+struct ImFont;
 
 namespace TodoApp {
 
-class GuiStyle {
-public:
-    void load();
-
+enum FontType {
+    Normal,
+    Bold,
+    Header1,
+    Header2,
+    Header3,
 };
 
-} // TodoApp
+class GuiStyle {
+   public:
+    void load();
+    void loadFonts();
+    void pushFont(FontType type);
+    void popFont();
+
+   private:
+    std::map<FontType, ImFont*> fonts;
+};
+
+}  // namespace TodoApp
