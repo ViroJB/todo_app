@@ -9,13 +9,13 @@ bool App::init() {
     commandHandler.queueCommand<ExampleCommand>(5, 5);
     commandHandler.queueCommand<ExampleCommand>(10, 5);
     commandHandler.queueCommand<ExampleCommand>();
-    commandHandler.executeCommands();
 
-    TodoController todoController;
-    auto todos = todoController.GetAll();
-    for (const auto& [id, todo] : *todos) {
-        fmt::print("todo: {}\n", todo.title);
-    }
+    // std::shared_ptr<TodoController> tc = std::make_shared<TodoController>();
+    // std::shared_ptr<Todo> td = std::make_shared<Todo>();
+    // td->description = "todo add command, hehehehehe";
+    // commandHandler.queueCommand<AddTodoCommand>(tc, td);
+
+    commandHandler.executeCommands();
 
     return true;
 }

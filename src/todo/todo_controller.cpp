@@ -13,6 +13,10 @@
 // or leave it as is? like its doing nothing?
 
 
+// get only new todo list when a new one was added, when the category switches or ???
+// so we need to save current category and the current todo list in a variable
+// like a cache... hasCache or something
+
 namespace TodoApp {
 
 TodoController::TodoController() {

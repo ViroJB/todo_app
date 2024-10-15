@@ -14,8 +14,8 @@ void WindowAddTodo::draw(const std::vector<const char*>& categories, GuiStyle st
     // TODO if that doesn't work, we can calculate the high of the todo window with the list somehow and use that as next position
 
     ImGuiIO& io = ImGui::GetIO();
-    ImGui::SetNextWindowPos({io.DisplaySize.x * 0.3f, io.DisplaySize.y * 0.85f});
-    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.7f, io.DisplaySize.y * 0.15f});
+    ImGui::SetNextWindowPos({io.DisplaySize.x * 0.25f, io.DisplaySize.y * 0.80f});
+    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.75f, io.DisplaySize.y * 0.20f});
 
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13f, 0.13f, 0.13f, 1.0f));
 
@@ -25,12 +25,12 @@ void WindowAddTodo::draw(const std::vector<const char*>& categories, GuiStyle st
     style.popFont();
 
     static char input[256];
-    ImGui::SetNextItemWidth(350.0f);
+    ImGui::SetNextItemWidth(300.0f);
     ImGui::InputTextWithHint("##AddTodoText", "Enter new todo", input, IM_ARRAYSIZE(input));
     ImGui::SameLine();
 
     static int item_current = 0;
-    ImGui::SetNextItemWidth(150.0f);
+    ImGui::SetNextItemWidth(120.0f);
     ImGui::Combo("##CategoriesCombo", &item_current, categories.data(), categories.size());
     ImGui::SameLine();
     if (ImGui::Button("+ Add Todo")) {

@@ -8,18 +8,17 @@ void GuiStyle::load() {
     ImGuiIO& io = ImGui::GetIO();
     ImGuiStyle& style = ImGui::GetStyle();
 
-    style.FrameRounding = 3.f;  // Set global frame rounding to 5 pixels
+    style.FrameRounding = 3.f;
     style.WindowBorderSize = 0.0f;
 
-    // set default font
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(10.0f, 10.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(30.0f, 20.0f));
+
     loadFonts();
-    // io.FontDefault = io.Fonts->AddFontFromFileTTF("fonts/inter.ttf", 18.0f);
 }
+
 void GuiStyle::loadFonts() {
     ImGuiIO& io = ImGui::GetIO();
-
-    // Load regular font
-    // auto font1 = io.Fonts->AddFontFromFileTTF("fonts/inter.ttf", 18.0f, &config);
 
     auto normal = io.Fonts->AddFontFromFileTTF("fonts/Inter_24pt-Regular.ttf", 22.0f);
     auto bold = io.Fonts->AddFontFromFileTTF("fonts/Inter_24pt-Bold.ttf", 22.0f);
@@ -34,10 +33,6 @@ void GuiStyle::loadFonts() {
     fonts[FontType::Header3] = header3;
 
     io.FontDefault = fonts[FontType::Normal];
-
-    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(10.0f, 10.0f));  // 10px padding on X and Y axis
-    // ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(30.0f, 10.0f));  // 10px padding on X and Y axis
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding , ImVec2(30.0f, 20.0f));  // 10px padding on X and Y axis
 }
 
 void GuiStyle::pushFont(const FontType type) {

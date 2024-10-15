@@ -3,6 +3,9 @@
 
 #include <memory>
 #include <queue>
+#include <utility>
+
+#include "todo/todo_controller.h"
 
 namespace TodoApp {
 
@@ -10,6 +13,23 @@ class BaseCommand {
    public:
     virtual ~BaseCommand() = default;
     virtual void execute() = 0;
+};
+
+class AddTodoCommand : public BaseCommand {
+   public:
+    // AddTodoCommand() = delete;
+    AddTodoCommand(std::shared_ptr<TodoController> controller, std::shared_ptr<Todo> todo)
+        : controller(std::move(controller)), todo(std::move(todo)) {}
+
+    void execute() override {
+        fmt::print("Add Todo Command.\n{}\n", todo->description);
+
+        controller->Add(*todo);
+    }
+
+   private:
+    std::shared_ptr<TodoController> controller;
+    std::shared_ptr<Todo> todo;
 };
 
 class ExampleCommand : public BaseCommand {

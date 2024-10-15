@@ -1,5 +1,6 @@
 #include "window_todo_list.hpp"
 
+#include <fmt/base.h>
 #include <imgui.h>
 
 #include "gui_style.hpp"
@@ -9,8 +10,8 @@ namespace TodoApp {
 void WindowTodoList::draw(std::map<int, Todo>* todoList, GuiStyle style) {
     // using namespace ImGui;
     ImGuiIO& io = ImGui::GetIO();
-    ImGui::SetNextWindowPos({io.DisplaySize.x * 0.3f, 0});
-    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.7f, io.DisplaySize.y * 0.85f});
+    ImGui::SetNextWindowPos({io.DisplaySize.x * 0.25f, 0});
+    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.75f, io.DisplaySize.y * 0.80f});
 
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.17f, 0.17f, 0.17f, 1.0f));
 
@@ -25,7 +26,7 @@ void WindowTodoList::draw(std::map<int, Todo>* todoList, GuiStyle style) {
         ImGui::TableSetupColumn("A1");
 
         const float rowHeight = ImGui::GetTextLineHeightWithSpacing() * 1.5f;
-        const float rowSpacing = 10.0f;
+        const float rowSpacing = 1.0f;
         for (const auto& [id, todo] : *todoList) {
             ImGui::TableNextRow();
             ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, ImGui::GetColorU32(ImVec4(0.15f, 0.15f, 0.15f, 1.0f)));
