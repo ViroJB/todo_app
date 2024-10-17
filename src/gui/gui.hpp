@@ -14,7 +14,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include <todo/todo_controller.h>
+#include <todo/todo_controller.hpp>
 
 #include "gui_style.hpp"
 #pragma comment(lib, "dwmapi.lib")

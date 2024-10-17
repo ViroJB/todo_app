@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "todo/category.hpp"
-#include "todo/todo.h"
+#include "todo/todo.hpp"
 
 namespace TodoApp {
 

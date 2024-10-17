@@ -4,11 +4,11 @@
 #include <memory>
 #include <string>
 
-#include "../config/config.h"
-#include "../database/database.hpp"
-#include "../database/sqlite_db.h"
+#include "config/config.hpp"
+#include "database/database.hpp"
+#include "database/sqlite_db.hpp"
 #include "category.hpp"
-#include "todo.h"
+#include "todo.hpp"
 
 namespace TodoApp {
 

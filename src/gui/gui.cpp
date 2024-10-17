@@ -2,7 +2,7 @@
 
 #include "gui/window_todo_list.hpp"
 #include "gui_style.hpp"
-#include "todo/todo_controller.h"
+#include "todo/todo_controller.hpp"
 #include "window_add_todo.hpp"
 #include "window_category_list.hpp"
 

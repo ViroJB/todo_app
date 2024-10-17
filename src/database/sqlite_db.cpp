@@ -1,4 +1,4 @@
-#include "sqlite_db.h"
+#include "sqlite_db.hpp"
 
 namespace TodoApp {
 
