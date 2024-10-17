@@ -1,5 +1,6 @@
 #pragma once
 #include <complex.h>
+#include <todo/todo_controller.h>
 
 #include <map>
 #include <vector>
@@ -10,7 +11,7 @@ namespace TodoApp {
 
 class WindowAddTodo {
    public:
-    static void draw(const std::vector<const char *> &categories, GuiStyle style);
+    static void draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr<TodoController>& todoController);
 };
 
 }  // namespace TodoApp

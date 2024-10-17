@@ -35,7 +35,7 @@ class Gui {
    private:
     GLFWwindow* m_window = nullptr;
     std::shared_ptr<TodoController> m_todoController;
-    GuiStyle m_style;
+    std::shared_ptr<GuiStyle> m_style;
 
 };
 

@@ -14,11 +14,17 @@ set(SOURCES
         src/todo/todo_controller.cpp
         src/gui/gui.cpp
         src/gui/gui.hpp
-        src/commands/command_handler.cpp
+        #        src/commands/command_handler.cpp
         src/gui/window_todo_list.cpp
         src/gui/window_category_list.cpp
         src/gui/window_add_todo.cpp
         src/gui/gui_style.cpp
+        src/todo/category.hpp
+)
+
+set(TEST_SOURCES
+        tests/todo_controller_test.cpp
+        tests/sqlite_db_test.cpp
 )
 
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
@@ -50,13 +56,17 @@ target_include_directories(todo_app PRIVATE ${OPENGL_INCLUDE_DIR})
 enable_testing()
 
 add_executable(tests
-        tests/tests.cpp
-        tests/todo_controller_test.cpp
-        tests/sqlite_db_test.cpp
-        src/database/sqlite_db.cpp
-        src/config/config.cpp
+        tests/main.cpp
+        ${TEST_SOURCES}
+        ${SOURCES}
 )
 
 target_link_libraries(tests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 target_link_libraries(tests PRIVATE unofficial::sqlite3::sqlite3)
+target_link_libraries(tests PRIVATE ${OPENGL_LIBRARIES})
+target_link_libraries(tests PRIVATE fmt::fmt)
+target_link_libraries(tests PRIVATE spdlog::spdlog)
+target_link_libraries(tests PRIVATE imgui::imgui)
+target_link_libraries(tests PRIVATE glfw)
+target_link_libraries(tests PRIVATE OpenGL::GL)
 add_test(AllTests tests)

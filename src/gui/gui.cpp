@@ -15,13 +15,13 @@ void Gui::init() {
     }
 
     const int windowWidth = 800;
-    const int windowHeight = 600;
+    const int windowHeight = 700;
 
     m_window = glfwCreateWindow(windowWidth, windowHeight, "Todo App", nullptr, nullptr);
     if (m_window != nullptr) {
         glfwMakeContextCurrent(m_window);
 
-        glfwSetWindowSizeLimits(m_window, 800, 600, GLFW_DONT_CARE, GLFW_DONT_CARE);
+        glfwSetWindowSizeLimits(m_window, windowWidth , windowHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
         // center window
         GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
@@ -49,9 +49,13 @@ void Gui::init() {
     // style stuff
     // needed for dark mode
     enableDarkModeForWindow();
-    m_style.load();
+    m_style = std::make_shared<GuiStyle>();
+    m_style->load();
 
     m_todoController = std::make_shared<TodoController>();
+
+    std::shared_ptr<Category> cat = std::make_shared<Category>();
+    m_todoController->setCurrentCategory(cat);
 }
 
 void Gui::render() {
@@ -62,18 +66,9 @@ void Gui::render() {
     }
     startFrame();
 
-    WindowCategoryList::draw(m_todoController->GetAllCategories(), m_style);
-    WindowTodoList::draw(m_todoController->GetAll(), m_style);
-
-    // temp, needs to be gone asap!
-    auto list = m_todoController->GetAllCategories();
-    std::vector<const char*> categories;
-    categories.reserve(list.size());
-    for (const auto& item : list) {
-        categories.push_back(item.second.c_str());
-    }
-
-    WindowAddTodo::draw(categories, m_style);
+    WindowCategoryList::draw(m_style, m_todoController);
+    WindowTodoList::draw(m_style, m_todoController);
+    WindowAddTodo::draw(m_style, m_todoController);
 
     // ImGui::ShowDemoWindow();
     endFrame();

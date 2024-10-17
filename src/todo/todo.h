@@ -2,18 +2,20 @@
 
 #include <string>
 
+#include "category.hpp"
+
 namespace TodoApp {
 
 struct Todo {
+    // todo add constructor with id, cat and text and maybe just with cat and text for adding
+    // Todo()
     int id = -1;
-    int category = -1;
-    std::string title;
-    std::string description;
-    std::string status = "pending";
-    std::string due_date = "";
-    std::string created_at = "";
-    std::string updated_at = "";
-    std::string category_name = "";
+    Category category;
+    std::string text;
+    bool completed = false;
+    std::string dueDate;
+    std::string createdAt;
+    std::string updatedAt;
 };
 
 }

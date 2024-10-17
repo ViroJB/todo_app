@@ -3,14 +3,12 @@
 #include <sqlite3.h>
 
 #include <iostream>
-#include <map>
 
 namespace TodoApp {
 
 class Setup {
    public:
-    Setup() {}
-    static void Run(const char* db_file) {
+    static void run(const char* db_file) {
         sqlite3* m_db;
         int rc = sqlite3_open(db_file, &m_db);
         if (rc) {
@@ -19,7 +17,7 @@ class Setup {
             std::cout << "Opened database successfully" << std::endl;
         }
 
-        std::string sql_category_table =
+        const std::string sql_category_table =
             "CREATE TABLE IF NOT EXISTS category (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, "
             "created_at TEXT DEFAULT CURRENT_TIMESTAMP, updated_at TEXT DEFAULT CURRENT_TIMESTAMP);";
         char* err_msg;
@@ -31,12 +29,10 @@ class Setup {
             std::cout << "category table created successfully" << std::endl;
         }
 
-        std::string sql_todo_table =
-            "CREATE TABLE IF NOT EXISTS todo (id INTEGER PRIMARY KEY AUTOINCREMENT, category INTEGER, title TEXT NOT NULL, description "
-            "TEXT "
-            "NOT NULL, status TEXT NOT NULL DEFAULT 'todo', due_date TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP, "
+        const std::string sql_todo_table =
+            "CREATE TABLE IF NOT EXISTS todo (id INTEGER PRIMARY KEY AUTOINCREMENT, category_id INTEGER NOT NULL, text TEXT NOT NULL, "
+            "completed INTEGER NOT NULL DEFAULT '0', due_date TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP, "
             "updated_at TEXT DEFAULT CURRENT_TIMESTAMP);";
-        // clear err_msg
         err_msg = nullptr;
         rc = sqlite3_exec(m_db, sql_todo_table.c_str(), NULL, 0, &err_msg);
         if (rc != SQLITE_OK) {
@@ -47,7 +43,7 @@ class Setup {
         }
     }
 
-    void InsertExampleData(const char* db_file) {
+    static void insertExampleData(const char* db_file) {
         sqlite3* m_db;
         int rc = sqlite3_open(db_file, &m_db);
         if (rc) {
@@ -71,28 +67,25 @@ class Setup {
 
         std::vector<Todo> sample_todos;
         Todo todo1, todo2, todo3, todo4;
-        todo1.category = 1;
-        todo1.title = "Sample Todo EINS";
-        todo1.description = "This is a sample todo 1";
-        todo2.category = 2;
-        todo2.title = "Sample Todo ZWEI";
-        todo2.description = "This is a sample todo 2";
-        todo3.category = 3;
-        todo3.title = "Sample Todo DREI";
-        todo3.description = "This is a sample todo 3";
-        todo4.category = 4;
-        todo4.title = "Sample Todo VIER";
-        todo4.description = "This is a sample todo 4";
+        todo1.category.id = 1;
+        todo1.text = "Sample Todo EINS";
+        todo2.category.id = 2;
+        todo2.text = "Sample Todo ZWEI";
+        todo3.category.id = 3;
+        todo3.text = "Sample Todo DREI";
+        todo4.category.id = 4;
+        todo4.text = "Sample Todo VIER";
         sample_todos.push_back(todo1);
         sample_todos.push_back(todo2);
         sample_todos.push_back(todo3);
         sample_todos.push_back(todo4);
 
         for (auto& todo : sample_todos) {
+            int completed = todo.completed;
             std::string sql =
-                "INSERT INTO todo (category, title, description, status, due_date, created_at, updated_at) VALUES ('" +
-                std::to_string(todo.category) + "', '" + todo.title + "', '" + todo.description + "', '" + todo.status +
-                "', '" + todo.due_date + "', '" + todo.created_at + "', '" + todo.updated_at + "');";
+                "INSERT INTO todo (category_id, text, completed) VALUES ('" +
+                std::to_string(todo.category.id) + "', '" + todo.text + "', '" + std::to_string(completed) +
+                "');";
             char* err_msg;
             int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
             if (rc != SQLITE_OK) {
