@@ -33,7 +33,6 @@ void WindowTodoList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<Todo
 
         auto tempList = todoController->getAllByCategory(todoController->getCurrentCategory());
         for (auto it = tempList.rbegin(); it != tempList.rend(); ++it) {
-            // for (const auto& [id, todo] : todoList) {
             ImGui::TableNextRow();
             ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, ImGui::GetColorU32(ImVec4(0.15f, 0.15f, 0.15f, 1.0f)));
 

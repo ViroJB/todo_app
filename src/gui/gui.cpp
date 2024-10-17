@@ -8,6 +8,9 @@
 
 namespace TodoApp {
 
+// TODO redo most of the gui stuff. use one begin and end, and the rest with child windows.
+// TODO refactor all the style stuff to the guistyle class
+
 void Gui::init() {
     glfwSetErrorCallback(glfwErrorCallback);
     if (!glfwInit()) {

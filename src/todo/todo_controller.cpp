@@ -1,6 +1,7 @@
 #include "todo_controller.hpp"
 
 #include <fmt/base.h>
+#include <spdlog/spdlog.h>
 
 #include <utility>
 
@@ -9,11 +10,19 @@ namespace TodoApp {
 // TODO FIX ALL THIS... it works, but at what cost??
 
 TodoController::TodoController() {
-    // NOTE gotta go with the setup here i guess, for now?
+    // NOTE gotta go with the setup here I guess, for now?
     if (!std::filesystem::exists(Config::DB_FILE)) {
         Setup::run(Config::DB_FILE);
         Setup::insertExampleData(Config::DB_FILE);
     }
+
+    spdlog::set_level(spdlog::level::trace);
+    spdlog::info("spdlooooooooooog\n");
+    spdlog::warn("spdlooooooooooog\n");
+    spdlog::error("spdlooooooooooog\n");
+    spdlog::debug("spdlooooooooooog\n");
+    spdlog::trace("spdlooooooooooog\n");
+    spdlog::critical("spdlooooooooooog\n");
 
     m_database = std::make_unique<SqliteDB>();
     m_database->connect(Config::DB_FILE);

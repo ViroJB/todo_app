@@ -6,6 +6,8 @@
 
 namespace TodoApp {
 
+// TODO make example todos that explain the usage of the app. like a in Tutorial category or something like that
+
 class Setup {
    public:
     static void run(const char* db_file) {

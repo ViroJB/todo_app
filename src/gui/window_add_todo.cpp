@@ -47,7 +47,7 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));  // Dark blue background for the popup
     ImGui::SetNextItemWidth(120.0f);
 
-    // i hate the static int here... i hate static, get rid of it
+    // i hate the static int here... I hate static, get rid of it
     auto categories = todoController->getAllCategories();
     static int selectedCategory = categories.begin()->first;
     if (todoController->hasChanges && todoController->getCurrentCategory()->id != -1) {
@@ -71,7 +71,6 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     ImGui::SameLine();
     ImGui::PopStyleColor(7);
 
-    // TODO fix the save button
     // add button
     if (ImGui::Button("+ Add Todo")) {
         // check if input is empty and if so, do nothing.

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "database/sqlite_db.h"
+#include "database/sqlite_db.hpp"
 
 class SqliteDBTest : public ::testing::Test {
 protected:

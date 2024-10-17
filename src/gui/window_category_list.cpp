@@ -42,18 +42,48 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
             ImGui::EndPopup();
         }
     }
-    // Todo add another selectable for All Todos (just All maybe)
     ImGui::Dummy({1.0f, 10.0f});
     bool selected = todoController->getCurrentCategory()->id == -1;
+    // TODO when all is selected and you click the completed button on a todo, the category of that todo is loading instead of the all one
     if (ImGui::Selectable("All", selected)) {
         auto cat = std::make_shared<Category>();
         todoController->setCurrentCategory(cat);
     }
 
+    style->popFont();
+
     // Todo add something to add a new category. maybe just an inputfield and done
+    // Calculate the available height below the text content
+    float availableHeight = ImGui::GetContentRegionAvail().y;
+    // Set the cursor position to the bottom of the window body
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + availableHeight - ImGui::GetFrameHeightWithSpacing());
+
+
+    // style for input
+    ImGui::GetStyle().FrameRounding = 6.0f;
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(9.0f, 0.0f));                   // Inside padding
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 10.0f));          // Set inner padding
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);                       // Set border size
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));         // Set button color
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));  // Set button color
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));   // Set button color
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.5f, 0.5f, 0.5f));         // Set border color
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));        // Set button color
+
+    static char inputCategory[256];
+    ImGui::SetNextItemWidth(180.0f);
+    ImGui::InputTextWithHint("##addCategory", "Enter new category", inputCategory, IM_ARRAYSIZE(inputCategory));
+    ImGui::SameLine();
+    // Add a button at the bottom
+    if (ImGui::Button(" + ")) {
+        // Button action here
+    }
+
+    ImGui::PopStyleColor(5);
+    ImGui::PopStyleVar(3);
+
     ImGui::PopStyleColor(3);
     ImGui::PopStyleVar();
-    style->popFont();
 
     ImGui::End();
     ImGui::PopStyleColor();
