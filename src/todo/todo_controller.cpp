@@ -73,7 +73,7 @@ void TodoController::update(std::unique_ptr<Todo> todo) {
     auto cat = std::make_shared<Category>(todo->category.id, todo->category.name);
     std::cout << "Updated Todo ID: " << todo->id << std::endl;
     m_database->updateTodo(std::move(todo));
-    refreshTodosByCategory(cat);
+    // refreshTodosByCategory(cat);
 }
 
 std::unique_ptr<Todo> TodoController::get(int id) { return m_database->getTodoById(id); }

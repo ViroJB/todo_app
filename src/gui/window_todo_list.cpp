@@ -46,9 +46,7 @@ void WindowTodoList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<Todo
             if (ImGui::RadioButton(label.c_str(), it->second->completed)) {
                 it->second->completed = !it->second->completed;
                 fmt::print("Radio Button clicked. id: {}\n", it->first);
-
                 auto todo = std::make_unique<Todo>(*it->second);
-                fmt::print("tmp todo id: {}\n", todo->id);
 
                 todoController->update(std::move(todo));
             }
