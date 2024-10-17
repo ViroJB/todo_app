@@ -76,15 +76,14 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     if (ImGui::Button("+ Add Todo")) {
         // check if input is empty and if so, do nothing.
         if (sizeof(input) / sizeof(input[0]) != 0) {
-            // std::string tempCat(categories[item_current]);
-            // auto tempCat2 = todoController->getCategoryByName(tempCat);
-            // auto todo = std::make_unique<Todo>();
-            // todo->category = Category{tempCat2->id, tempCat2->name};
-            // todo->text = std::string(input);
-            //
-            // todoController->add(std::move(todo));
+            auto todo = std::make_unique<Todo>();
+            todo->category.id = categories.at(selectedCategory)->id;
+            todo->category.name = categories.at(selectedCategory)->name;
+            todo->text = std::string(input);
+
+            todoController->add(std::move(todo));
             // // empty input
-            // memset(input, 0, sizeof(input));
+            memset(input, 0, sizeof(input));
         }
     }
 

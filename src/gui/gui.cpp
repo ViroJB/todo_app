@@ -14,6 +14,7 @@ void Gui::init() {
         fmt::print("Failed to initialize GLFW3\n");
     }
 
+    // this is also min width and height of the window
     const int windowWidth = 800;
     const int windowHeight = 700;
 
