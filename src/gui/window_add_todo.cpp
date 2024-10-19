@@ -8,6 +8,7 @@
 
 namespace TodoApp {
 
+// todo handle long category names in combo box
 void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr<TodoController>& todoController) {
     style->pushWindowAddTodo();
     ImGui::Begin("AddTodo", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
@@ -29,8 +30,12 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     // i hate the static int here... I hate static, get rid of it
     auto categories = todoController->getAllCategories();
     static int selectedCategory = categories.begin()->first;
+    // there is no actual category with -1, its for All. so it can't be shown as combo item, therefor this "thing"
     if (todoController->hasChanges && todoController->getCurrentCategory()->id != -1) {
         selectedCategory = todoController->getCurrentCategory()->id;
+        todoController->hasChanges = false;
+    } else if (todoController->hasChanges) {
+        selectedCategory = todoController->getAllCategories().begin()->first;
         todoController->hasChanges = false;
     }
 
@@ -56,7 +61,7 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     ImGui::SameLine();
     if (ImGui::Button("+ Add Todo")) {
         // check if input is empty and if so, do nothing.
-        if (sizeof(input) / sizeof(input[0]) != 0) {
+        if (input[0] != 0) {
             auto todo = std::make_unique<Todo>();
             todo->category.id = categories.at(selectedCategory)->id;
             todo->category.name = categories.at(selectedCategory)->name;

@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include "../../fonts/IconsFontAwesome.h"
+
 namespace TodoApp {
 
 void GuiStyle::load() {
@@ -10,6 +12,7 @@ void GuiStyle::load() {
 
     style.FrameRounding = 3.f;
     style.WindowBorderSize = 0.0f;
+    style.PopupRounding = 6.0f;
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(10.0f, 10.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(30.0f, 20.0f));
@@ -26,11 +29,22 @@ void GuiStyle::loadFonts() {
     auto header2 = io.Fonts->AddFontFromFileTTF("fonts/Inter_24pt-Bold.ttf", 33.0f);
     auto header3 = io.Fonts->AddFontFromFileTTF("fonts/Inter_24pt-Bold.ttf", 28.0f);
 
+    // load font awesome
+    static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    // static const ImWchar icons_ranges[] = { 0xf000, 0xf3ff, 0 }; // Solid icons
+    ImFontConfig config;
+    config.MergeMode = true;
+    config.PixelSnapH = true;
+    config.GlyphMinAdvanceX = 13.0f;
+    // auto awesome = io.Fonts->AddFontFromFileTTF("fonts/fa-solid-900.ttf", 20.0f, &config, icons_ranges);
+    auto awesome = io.Fonts->AddFontFromFileTTF("fonts/fa-regular-400.ttf", 28.0f, &config, icons_ranges);
+
     fonts[FontType::Normal] = normal;
     fonts[FontType::Bold] = bold;
     fonts[FontType::Header1] = header1;
     fonts[FontType::Header2] = header2;
     fonts[FontType::Header3] = header3;
+    fonts[FontType::Awesome] = awesome;
 
     io.FontDefault = fonts[FontType::Normal];
 }
@@ -39,7 +53,7 @@ void GuiStyle::pushWindowCategoryList() {
     ImGui::SetNextWindowPos({0, 0});
     ImGui::SetNextWindowSize({270.0f, ImGui::GetIO().DisplaySize.y});
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));  // Inside padding
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 15));  // Inside padding
 }
 void GuiStyle::popWindowCategoryList() {
     ImGui::PopStyleVar();
@@ -76,7 +90,6 @@ void GuiStyle::pushInputForm() {
 void GuiStyle::popInputForm() {
     ImGui::PopStyleVar();
 }
-
 
 void GuiStyle::pushInputText() {
     ImGui::GetStyle().FrameRounding = 6.0f;

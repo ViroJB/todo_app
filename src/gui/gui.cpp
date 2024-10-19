@@ -1,5 +1,6 @@
 #include "gui.hpp"
 
+#include "config/config.hpp"
 #include "gui/window_todo_list.hpp"
 #include "gui_style.hpp"
 #include "todo/todo_controller.hpp"
@@ -17,23 +18,18 @@ void Gui::init() {
         fmt::print("Failed to initialize GLFW3\n");
     }
 
-    // this is also min width and height of the window
-    const int windowWidth = 863;
-    const int windowHeight = 700;
-
-    m_window = glfwCreateWindow(windowWidth, windowHeight, "Todo App", nullptr, nullptr);
+    m_window = glfwCreateWindow(Config::APP_DEFAULT_WIDTH, Config::APP_DEFAULT_HEIGHT, Config::APP_NAME.c_str(), nullptr, nullptr);
     if (m_window != nullptr) {
         glfwMakeContextCurrent(m_window);
-
-        glfwSetWindowSizeLimits(m_window, windowWidth , windowHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
+        glfwSetWindowSizeLimits(m_window, Config::APP_MIN_WIDTH , Config::APP_MIN_HEIGHT, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
         // center window
         GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
         if (primaryMonitor) {
             const GLFWvidmode* vidMode = glfwGetVideoMode(primaryMonitor);
 
-            int windowPosX = (vidMode->width - windowWidth) / 2;
-            int windowPosY = (vidMode->height - windowHeight) / 2;
+            int windowPosX = (vidMode->width - Config::APP_DEFAULT_WIDTH) / 2;
+            int windowPosY = (vidMode->height - Config::APP_DEFAULT_HEIGHT) / 2;
 
             glfwSetWindowPos(m_window, windowPosX, windowPosY);
         }

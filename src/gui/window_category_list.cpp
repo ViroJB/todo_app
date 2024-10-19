@@ -2,12 +2,14 @@
 
 #include <fmt/base.h>
 #include <imgui.h>
+
 #include <todo/todo_controller.hpp>
 
 #include "gui_style.hpp"
 
 namespace TodoApp {
 
+// TODO show amount of todos under each category
 void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<TodoController>& todoController) {
     style->pushWindowCategoryList();
     ImGui::Begin("Categories", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
@@ -22,14 +24,18 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     style->pushSelectableMenu();
     auto categories = todoController->getAllCategories();
     for (const auto& [id, category] : categories) {
-        const char* cat = category->name.c_str();
         bool selected = category->name == todoController->getCurrentCategory()->name;
-        if (ImGui::Selectable(cat, selected)) {
+        std::string tmpText = truncateStringWithEllipsis(category->name, 210.0f);
+        if (ImGui::Selectable(tmpText.c_str(), selected, ImGuiSelectableFlags_None, ImVec2(210.0f, 0.0f))) {
             todoController->setCurrentCategory(category);
+        }
+        // only show tooltip with the name if it has "..." in it, aka it was truncated
+        if (ImGui::IsItemHovered() && tmpText.find("...") != std::string::npos) {
+            ImGui::SetTooltip(category->name.c_str());
         }
         if (ImGui::BeginPopupContextItem()) {  // this actually opens a context menu on right click
             if (ImGui::MenuItem("Delete")) {
-                // TODO handle...
+                todoController->deleteCategory(category);
             }
             ImGui::EndPopup();
         }
@@ -54,13 +60,18 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     static char inputCategory[256];
     style->pushInputText();
     ImGui::SetNextItemWidth(180.0f);
-    ImGui::InputTextWithHint("##addCategory", "Enter new category", inputCategory, IM_ARRAYSIZE(inputCategory));
+    if (ImGui::InputTextWithHint("##addCategory", "Enter new category", inputCategory, IM_ARRAYSIZE(inputCategory), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        // on pressing enter
+        todoController->addCategory(std::string(inputCategory));
+        memset(inputCategory, 0, sizeof(inputCategory));
+    }
     style->popInputText();
 
     ImGui::SameLine();
     style->pushButton();
     if (ImGui::Button(" + ")) {
-        // TODO save category
+        todoController->addCategory(std::string(inputCategory));
+        memset(inputCategory, 0, sizeof(inputCategory));
     }
     style->popButton();
 
@@ -68,6 +79,36 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
 
     style->popWindowCategoryList();
     ImGui::End();
+}
+
+// todo remove (or is it good?)
+std::string WindowCategoryList::truncateStringWithEllipsis(const std::string& text, float maxWidth) {
+    const float ellipsisWidth = ImGui::CalcTextSize("...").x;  // Calculate width of "..."
+    std::string result;
+    float currentWidth = 0.0f;
+
+    for (size_t i = 0; i < text.size(); ++i) {
+        // calculate size of next char
+        const char* nextChar = text.c_str() + i;
+        ImVec2 charSize = ImGui::CalcTextSize(nextChar, nextChar + 1);
+
+        // check if adding next char would exceed the available width
+        if (currentWidth + charSize.x + ellipsisWidth > maxWidth) {
+            result += "...";
+            break;
+        }
+
+        // add char
+        result += text[i];
+        currentWidth += charSize.x;
+    }
+
+    // return original if no changes needed
+    if (result.empty()) {
+        return text;
+    }
+
+    return result;
 }
 
 }  // namespace TodoApp

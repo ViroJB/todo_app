@@ -7,7 +7,7 @@
 namespace TodoApp {
 
 // TODO FIX ALL THIS... it works, but at what cost??
-
+// todo make -1 as id for category work. for example we could keep todos without category, if we delete a category
 TodoController::TodoController() {
     // NOTE gotta go with the setup here I guess, for now?
     if (!std::filesystem::exists(Config::DB_FILE)) {
@@ -127,4 +127,24 @@ void TodoController::refreshCategories() {
     m_categories = sharedPtrMap;
 }
 
-}  // namespace TodoApp
+void TodoController::addCategory(std::string category) {
+    std::shared_ptr<Category> cat = std::make_shared<Category>();
+    cat->name = category;
+    m_database->addCategory(std::move(cat));
+    refreshCategories();
+    setCurrentCategory(getCategoryByName(category));
+}
+
+void TodoController::deleteCategory(std::shared_ptr<Category> category) {
+    // todo change the current category, if it's the same as the one that's being deleted
+    // todo delete all todos that are connected to that category.
+    // todo maybe we keep them, but some parts like All would crash with the current structure
+    if (m_currentCategory->name == category->name) {
+        setCurrentCategory(std::make_shared<Category>());
+    }
+    m_database->deleteCategory(std::move(category));
+    refreshCategories();
+    hasChanges = true;
+}
+
+}  // namespace TodoAp

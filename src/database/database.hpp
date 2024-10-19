@@ -22,6 +22,8 @@ class Database {
     virtual std::map<int, std::unique_ptr<Todo>> getTodos() = 0;
     virtual std::map<int, std::unique_ptr<Todo>> getTodosByCategory(std::shared_ptr<Category> category) = 0;
 
+    virtual bool addCategory(std::shared_ptr<Category> category) = 0;
+    virtual bool deleteCategory(std::shared_ptr<Category> category) = 0;
     virtual std::map<int, std::unique_ptr<Category>> getCategories() = 0;
     virtual std::unique_ptr<Category> getCategoryByName(std::string name) = 0;
 };

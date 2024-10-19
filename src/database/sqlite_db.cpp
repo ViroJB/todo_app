@@ -66,7 +66,8 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodosByCategory(std::shared_pt
     std::map<int, std::unique_ptr<Todo>> todos;
     std::string sql =
         "SELECT todo.id, todo.text, todo.completed, todo.due_date, todo.created_at, todo.updated_at "
-        "FROM todo WHERE todo.category_id = " + std::to_string(category->id) + ";";
+        "FROM todo WHERE todo.category_id = " +
+        std::to_string(category->id) + ";";
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
@@ -81,7 +82,8 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodosByCategory(std::shared_pt
             // todo->dueDate = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
             todo->createdAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4)));
             todo->updatedAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)));
-            // FIXME everything goes to shit here, because there is a zero inserted in categorie.id, which should never happen..
+            // FIXME everything goes to shit here, because there is a zero inserted in categorie.id, which should never
+            // happen..
             // FIXME might add todos without category, maybe
             todo->category.id = category->id;
             todo->category.name = category->name;
@@ -92,6 +94,40 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodosByCategory(std::shared_pt
     sqlite3_finalize(stmt);
     std::cout << "Fetched all todos, size: " << todos.size() << std::endl;
     return todos;
+}
+
+// todo
+bool SqliteDB::addCategory(std::shared_ptr<Category> category) {
+    std::string sql =
+        "INSERT INTO category (name) "
+        "VALUES ('" + category->name + "');";
+    char* err_msg;
+    int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << err_msg << std::endl;
+        sqlite3_free(err_msg);
+        return false;
+    }
+
+    int id = sqlite3_last_insert_rowid(m_db);
+    std::cout << "Category created successfully, ID: " << id << std::endl;
+
+    return true;
+}
+
+// todo
+bool SqliteDB::deleteCategory(std::shared_ptr<Category> category) {
+    std::string sql = "DELETE FROM category WHERE id = " + std::to_string(category->id) + ";";
+    char* err_msg;
+    int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << err_msg << std::endl;
+        sqlite3_free(err_msg);
+        return false;
+    } else {
+        std::cout << "Category deleted successfully" << std::endl;
+        return true;
+    }
 }
 
 bool SqliteDB::addTodo(std::unique_ptr<Todo> todo) {
@@ -114,7 +150,7 @@ bool SqliteDB::addTodo(std::unique_ptr<Todo> todo) {
     }
 
     int id = sqlite3_last_insert_rowid(m_db);
-    std::cout << "Record created successfully, ID: " << id << std::endl;
+    std::cout << "Todo created successfully, ID: " << id << std::endl;
 
     return true;
 }

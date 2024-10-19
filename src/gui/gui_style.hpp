@@ -11,6 +11,7 @@ enum FontType {
     Header1,
     Header2,
     Header3,
+    Awesome,
 };
 
 class GuiStyle {

@@ -27,6 +27,8 @@ class TodoController {
     void refreshTodos();
     void refreshCategories();
 
+    void addCategory(std::string category);
+    void deleteCategory(std::shared_ptr<Category> category);
     std::map<int, std::shared_ptr<Category>> getAllCategories();
     std::unique_ptr<Category> getCategoryByName(std::string name);
     std::shared_ptr<Category> getCurrentCategory();
