@@ -9,10 +9,7 @@
 namespace TodoApp {
 
 void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<TodoController>& todoController) {
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::SetNextWindowPos({0, 0});
-    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.25f, io.DisplaySize.y});
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
+    style->pushWindowCategoryList();
     ImGui::Begin("Categories", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
 
     style->pushFont(FontType::Header2);
@@ -22,13 +19,8 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     ImGui::NewLine();
 
     style->pushFont(FontType::Bold);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));                   // Inside padding
-    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));    // Hover color (red)
-    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));           // Selected color (green)
-    ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.18f, 0.18f, 0.18f, 1.0f));  // Selected color (green)
-
+    style->pushSelectableMenu();
     auto categories = todoController->getAllCategories();
-
     for (const auto& [id, category] : categories) {
         const char* cat = category->name.c_str();
         bool selected = category->name == todoController->getCurrentCategory()->name;
@@ -44,49 +36,38 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     }
     ImGui::Dummy({1.0f, 10.0f});
     bool selected = todoController->getCurrentCategory()->id == -1;
-    // TODO when all is selected and you click the completed button on a todo, the category of that todo is loading instead of the all one
     if (ImGui::Selectable("All", selected)) {
         auto cat = std::make_shared<Category>();
         todoController->setCurrentCategory(cat);
     }
-
+    style->popSelectableMenu();
     style->popFont();
 
-    // Todo add something to add a new category. maybe just an inputfield and done
-    // Calculate the available height below the text content
+    // continue at the bottom of the window
     float availableHeight = ImGui::GetContentRegionAvail().y;
-    // Set the cursor position to the bottom of the window body
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() + availableHeight - ImGui::GetFrameHeightWithSpacing());
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 10.0f);
 
-
-    // style for input
-    ImGui::GetStyle().FrameRounding = 6.0f;
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(9.0f, 0.0f));                   // Inside padding
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 10.0f));          // Set inner padding
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);                       // Set border size
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));         // Set button color
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));  // Set button color
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));   // Set button color
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.5f, 0.5f, 0.5f));         // Set border color
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));        // Set button color
+    // input form
+    style->pushInputForm();
 
     static char inputCategory[256];
+    style->pushInputText();
     ImGui::SetNextItemWidth(180.0f);
     ImGui::InputTextWithHint("##addCategory", "Enter new category", inputCategory, IM_ARRAYSIZE(inputCategory));
+    style->popInputText();
+
     ImGui::SameLine();
-    // Add a button at the bottom
+    style->pushButton();
     if (ImGui::Button(" + ")) {
-        // Button action here
+        // TODO save category
     }
+    style->popButton();
 
-    ImGui::PopStyleColor(5);
-    ImGui::PopStyleVar(3);
+    style->popInputForm();
 
-    ImGui::PopStyleColor(3);
-    ImGui::PopStyleVar();
-
+    style->popWindowCategoryList();
     ImGui::End();
-    ImGui::PopStyleColor();
 }
 
 }  // namespace TodoApp

@@ -1,7 +1,6 @@
 #include "todo_controller.hpp"
 
 #include <fmt/base.h>
-#include <spdlog/spdlog.h>
 
 #include <utility>
 
@@ -15,14 +14,6 @@ TodoController::TodoController() {
         Setup::run(Config::DB_FILE);
         Setup::insertExampleData(Config::DB_FILE);
     }
-
-    spdlog::set_level(spdlog::level::trace);
-    spdlog::info("spdlooooooooooog\n");
-    spdlog::warn("spdlooooooooooog\n");
-    spdlog::error("spdlooooooooooog\n");
-    spdlog::debug("spdlooooooooooog\n");
-    spdlog::trace("spdlooooooooooog\n");
-    spdlog::critical("spdlooooooooooog\n");
 
     m_database = std::make_unique<SqliteDB>();
     m_database->connect(Config::DB_FILE);

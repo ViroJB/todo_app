@@ -9,44 +9,23 @@
 namespace TodoApp {
 
 void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr<TodoController>& todoController) {
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::SetNextWindowPos({io.DisplaySize.x * 0.25f, io.DisplaySize.y * 0.80f});
-    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.75f, io.DisplaySize.y * 0.20f});
-
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13f, 0.13f, 0.13f, 1.0f));
-
+    style->pushWindowAddTodo();
     ImGui::Begin("AddTodo", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+
     style->pushFont(FontType::Header3);
     ImGui::Text(" Add New Todo");
     style->popFont();
-    ImGui::NewLine();
 
-    // style for input
-    ImGui::GetStyle().FrameRounding = 6.0f;
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 10.0f));          // Set inner padding
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);                       // Set border size
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));         // Set button color
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));  // Set button color
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));   // Set button color
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.5f, 0.5f, 0.5f));         // Set border color
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));        // Set button color
+    ImGui::NewLine();
 
     // input text field
     static char input[256];
     ImGui::SetNextItemWidth(300.0f);
+    style->pushInputText();
     ImGui::InputTextWithHint("##AddTodoText", "Enter new todo", input, IM_ARRAYSIZE(input));
-    ImGui::SameLine();
+    style->popInputText();
 
     // combo box
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));  // Set button color
-    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));  // Green for selected item
-    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));  // Darker green when active
-    ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));  // Dark blue background for the popup
-    ImGui::SetNextItemWidth(120.0f);
-
     // i hate the static int here... I hate static, get rid of it
     auto categories = todoController->getAllCategories();
     static int selectedCategory = categories.begin()->first;
@@ -55,6 +34,9 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
         todoController->hasChanges = false;
     }
 
+    style->pushComboBox();
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(120.0f);
     if (ImGui::BeginCombo("##CategoriesCombo", categories.at(selectedCategory)->name.c_str())) {
         for (const auto& category : categories) {
             bool selected = (selectedCategory == category.first);
@@ -67,11 +49,11 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
 
         ImGui::EndCombo();
     }
-
-    ImGui::SameLine();
-    ImGui::PopStyleColor(7);
+    style->popComboBox();
 
     // add button
+    style->pushButton();
+    ImGui::SameLine();
     if (ImGui::Button("+ Add Todo")) {
         // check if input is empty and if so, do nothing.
         if (sizeof(input) / sizeof(input[0]) != 0) {
@@ -85,14 +67,11 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
             memset(input, 0, sizeof(input));
         }
     }
+    style->popButton();
 
-    // end style stuff
-    ImGui::GetStyle().FrameRounding = 3.0f;
-    ImGui::PopStyleVar(2);
-    ImGui::PopStyleColor(5);
-
+    style->popWindowAddTodo();
     ImGui::End();
-    ImGui::PopStyleColor();
+
 }
 
 }  // namespace TodoApp

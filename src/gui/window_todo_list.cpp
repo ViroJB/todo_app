@@ -10,18 +10,14 @@
 namespace TodoApp {
 
 void WindowTodoList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<TodoController>& todoController) {
-    // using namespace ImGui;
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::SetNextWindowPos({io.DisplaySize.x * 0.25f, 0});
-    ImGui::SetNextWindowSize({io.DisplaySize.x * 0.75f, io.DisplaySize.y * 0.80f});
-
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.17f, 0.17f, 0.17f, 1.0f));
-
+    style->pushWindowTodoList();
     ImGui::Begin("Todo's", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+
     style->pushFont(FontType::Header1);
     std::string headline(todoController->getCurrentCategory()->name + " Todos");
     ImGui::Text(headline.c_str());
     style->popFont();
+
     ImGui::NewLine();
 
     if (ImGui::BeginTable("table_nested1", 2, ImGuiTableFlags_SizingStretchProp)) {
@@ -81,9 +77,9 @@ void WindowTodoList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<Todo
         ImGui::EndTable();
     }
 
+    style->popWindowTodoList();
     ImGui::End();
 
-    ImGui::PopStyleColor();
 }
 
 }  // namespace TodoApp

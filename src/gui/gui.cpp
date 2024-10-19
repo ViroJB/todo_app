@@ -18,7 +18,7 @@ void Gui::init() {
     }
 
     // this is also min width and height of the window
-    const int windowWidth = 800;
+    const int windowWidth = 863;
     const int windowHeight = 700;
 
     m_window = glfwCreateWindow(windowWidth, windowHeight, "Todo App", nullptr, nullptr);
