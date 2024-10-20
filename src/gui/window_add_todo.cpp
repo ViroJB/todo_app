@@ -19,18 +19,25 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
 
     ImGui::NewLine();
 
+    bool enterPressed = false;
+    // todo is char needed here? or can we go with vector, so we don't need to specify a size
     // input text field
     static char input[256];
-    ImGui::SetNextItemWidth(300.0f);
+    // calculate size of the input field dynamically
+    float availableWidth = ImGui::GetContentRegionAvail().x;
+    float inputFieldWidth = availableWidth - 120.0f - 115.0f - ImGui::GetStyle().ItemSpacing.x * 2; // Account for spacing
+    ImGui::SetNextItemWidth(inputFieldWidth);
     style->pushInputText();
-    ImGui::InputTextWithHint("##AddTodoText", "Enter new todo", input, IM_ARRAYSIZE(input));
+    if (ImGui::InputTextWithHint("##AddTodoText", "Enter new todo", input, IM_ARRAYSIZE(input), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        enterPressed = true;
+    }
     style->popInputText();
 
     // combo box
     // i hate the static int here... I hate static, get rid of it
     auto categories = todoController->getAllCategories();
     static int selectedCategory = categories.begin()->first;
-    // there is no actual category with -1, its for All. so it can't be shown as combo item, therefor this "thing"
+    // there is no actual category with -1, it's for All. so it can't be shown as combo item, therefor this "thing"
     if (todoController->hasChanges && todoController->getCurrentCategory()->id != -1) {
         selectedCategory = todoController->getCurrentCategory()->id;
         todoController->hasChanges = false;
@@ -54,6 +61,9 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
 
         ImGui::EndCombo();
     }
+    if (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)) {
+        enterPressed = true;
+    }
     style->popComboBox();
 
     // add button
@@ -61,6 +71,21 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     ImGui::SameLine();
     if (ImGui::Button("+ Add Todo")) {
         // check if input is empty and if so, do nothing.
+        // if (input[0] != 0) {
+        //     auto todo = std::make_unique<Todo>();
+        //     todo->category.id = categories.at(selectedCategory)->id;
+        //     todo->category.name = categories.at(selectedCategory)->name;
+        //     todo->text = std::string(input);
+        //
+        //     todoController->add(std::move(todo));
+        //     // // empty input
+        //     memset(input, 0, sizeof(input));
+        // }
+        enterPressed = true;
+    }
+    style->popButton();
+
+    if (enterPressed) {
         if (input[0] != 0) {
             auto todo = std::make_unique<Todo>();
             todo->category.id = categories.at(selectedCategory)->id;
@@ -72,7 +97,6 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
             memset(input, 0, sizeof(input));
         }
     }
-    style->popButton();
 
     style->popWindowAddTodo();
     ImGui::End();
