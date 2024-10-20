@@ -96,7 +96,6 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodosByCategory(std::shared_pt
     return todos;
 }
 
-// todo
 bool SqliteDB::addCategory(std::shared_ptr<Category> category) {
     std::string sql =
         "INSERT INTO category (name) "
@@ -115,7 +114,6 @@ bool SqliteDB::addCategory(std::shared_ptr<Category> category) {
     return true;
 }
 
-// todo
 bool SqliteDB::deleteCategory(std::shared_ptr<Category> category) {
     std::string sql = "DELETE FROM category WHERE id = " + std::to_string(category->id) + ";";
     char* err_msg;
@@ -184,6 +182,19 @@ bool SqliteDB::deleteTodoById(int id) {
         return true;
     }
 }
+bool SqliteDB::deleteTodosByCategory(std::shared_ptr<Category> category) {
+    std::string sql = "DELETE FROM todo WHERE category_id = " + std::to_string(category->id) + ";";
+    char* err_msg;
+    int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << err_msg << std::endl;
+        sqlite3_free(err_msg);
+        return false;
+    } else {
+        std::cout << "Record deleted successfully" << std::endl;
+        return true;
+    }
+}
 
 std::unique_ptr<Todo> SqliteDB::getTodoById(int id) {
     std::unique_ptr<Todo> todo;
@@ -240,7 +251,6 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodos() {
             todo->createdAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)));
             todo->updatedAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6)));
             // FIXME everything goes to shit here, because there is a zero inserted in categorie.id, which should never happen..
-            // FIXME might add todos without category, maybe
             todo->category.name = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7)));
 
             todos.emplace(todo->id, std::move(todo));

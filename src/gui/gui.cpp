@@ -70,8 +70,15 @@ void Gui::render() {
     WindowTodoList::draw(m_style, m_todoController);
     WindowAddTodo::draw(m_style, m_todoController);
 
+    // todo make this work. its probably not working because we actually use 3 different windows, not child windows..
+    // if (ImGui::IsWindowFocused()) {
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    // } else {
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    // }
     // ImGui::ShowDemoWindow();
     endFrame();
+
 }
 
 void Gui::startFrame() {

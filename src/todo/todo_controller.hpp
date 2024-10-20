@@ -4,10 +4,10 @@
 #include <memory>
 #include <string>
 
+#include "category.hpp"
 #include "config/config.hpp"
 #include "database/database.hpp"
 #include "database/sqlite_db.hpp"
-#include "category.hpp"
 #include "todo.hpp"
 
 namespace TodoApp {
@@ -20,6 +20,7 @@ class TodoController {
     void add(std::unique_ptr<Todo> todo);
     void remove(int id);
     void update(std::unique_ptr<Todo> todo);
+    bool deleteTodosByCategory(std::shared_ptr<Category> category);
     std::unique_ptr<Todo> get(int id);
     std::map<int, std::shared_ptr<Todo>> getAll();
     std::map<int, std::shared_ptr<Todo>> getAllByCategory(std::shared_ptr<Category> category);

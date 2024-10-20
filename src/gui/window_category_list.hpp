@@ -12,7 +12,7 @@ namespace TodoApp {
 class WindowCategoryList {
    public:
     static void draw(std::shared_ptr<GuiStyle> &style, std::shared_ptr<TodoController> &todoController);
-    static std::string truncateStringWithEllipsis(const std::string &text, float maxWidth);
+    static std::string truncateString(const std::string &text, float maxWidth);
 };
 
 }

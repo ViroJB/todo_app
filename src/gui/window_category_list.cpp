@@ -25,7 +25,7 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     auto categories = todoController->getAllCategories();
     for (const auto& [id, category] : categories) {
         bool selected = category->name == todoController->getCurrentCategory()->name;
-        std::string tmpText = truncateStringWithEllipsis(category->name, 210.0f);
+        std::string tmpText = truncateString(category->name, 210.0f);
         if (ImGui::Selectable(tmpText.c_str(), selected, ImGuiSelectableFlags_None, ImVec2(210.0f, 0.0f))) {
             todoController->setCurrentCategory(category);
         }
@@ -83,14 +83,13 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     ImGui::End();
 }
 
-// todo remove (or is it good?)
-std::string WindowCategoryList::truncateStringWithEllipsis(const std::string& text, float maxWidth) {
-    const float ellipsisWidth = ImGui::CalcTextSize("...").x;  // Calculate width of "..."
+// need to move it somewhere else, could need it in different places
+std::string WindowCategoryList::truncateString(const std::string& text, float maxWidth) {
+    const float ellipsisWidth = ImGui::CalcTextSize("...").x;
     std::string result;
     float currentWidth = 0.0f;
 
     for (size_t i = 0; i < text.size(); ++i) {
-        // calculate size of next char
         const char* nextChar = text.c_str() + i;
         ImVec2 charSize = ImGui::CalcTextSize(nextChar, nextChar + 1);
 

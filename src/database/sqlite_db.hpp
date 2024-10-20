@@ -32,6 +32,7 @@ class SqliteDB : public Database {
     bool addTodo(std::unique_ptr<Todo> todo) override;
     bool updateTodo(std::unique_ptr<Todo> todo) override;
     bool deleteTodoById(int id) override;
+    bool deleteTodosByCategory(std::shared_ptr<Category> category) override;
 
    private:
     sqlite3* m_db = nullptr;

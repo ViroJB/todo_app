@@ -12,10 +12,11 @@ namespace TodoApp {
 
 void WindowTodoList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<TodoController>& todoController) {
     style->pushWindowTodoList();
-    ImGui::Begin("Todo's", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+    ImGui::Begin("Todos", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
 
     style->pushFont(FontType::Header1);
-    std::string headline(todoController->getCurrentCategory()->name + " Todos");
+    std::string headline = todoController->getCurrentCategory()->name.empty() ? "All" : todoController->getCurrentCategory()->name;
+    headline = headline + " Todos";
     ImGui::PushTextWrapPos(ImGui::GetWindowContentRegionMax().x - 5.0f);
     ImGui::Text(headline.c_str());
     ImGui::PopTextWrapPos();

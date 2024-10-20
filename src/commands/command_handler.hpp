@@ -11,6 +11,18 @@ namespace TodoApp {
 
 // NOTE will probably never be used here... just some fun
 
+// example usage:
+// CommandHandler commandHandler;
+// commandHandler.queueCommand<ExampleCommand>(5, 5);
+// commandHandler.queueCommand<ExampleCommand>(10, 5);
+// commandHandler.queueCommand<ExampleCommand>();
+// std::shared_ptr<TodoController> tc = std::make_shared<TodoController>();
+// std::shared_ptr<Todo> td = std::make_shared<Todo>();
+// td->description = "todo add command, hehehehehe";
+// commandHandler.queueCommand<AddTodoCommand>(tc, td);
+
+// commandHandler.executeCommands();
+
 class BaseCommand {
    public:
     virtual ~BaseCommand() = default;
@@ -24,9 +36,9 @@ class AddTodoCommand : public BaseCommand {
         : controller(std::move(controller)), todo(std::move(todo)) {}
 
     void execute() override {
-        fmt::print("Add Todo Command.\n{}\n", todo->description);
+        fmt::print("Add Todo Command.\n{}\n", todo->text);
 
-        controller->Add(*todo);
+//        controller->add(*todo);
     }
 
    private:

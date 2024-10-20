@@ -17,6 +17,7 @@ class Database {
     virtual bool addTodo(std::unique_ptr<Todo> todo) = 0;
     virtual bool updateTodo(std::unique_ptr<Todo> todo) = 0;
     virtual bool deleteTodoById(int id) = 0;
+    virtual bool deleteTodosByCategory(std::shared_ptr<Category> category) = 0;
 
     virtual std::unique_ptr<Todo> getTodoById(int id) = 0;
     virtual std::map<int, std::unique_ptr<Todo>> getTodos() = 0;

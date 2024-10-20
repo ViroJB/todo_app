@@ -64,15 +64,16 @@ void TodoController::update(std::unique_ptr<Todo> todo) {
     auto cat = std::make_shared<Category>(todo->category.id, todo->category.name);
     std::cout << "Updated Todo ID: " << todo->id << std::endl;
     m_database->updateTodo(std::move(todo));
-    // refreshTodosByCategory(cat);
+}
+
+bool TodoController::deleteTodosByCategory(std::shared_ptr<Category> category) {
+    m_database->deleteTodosByCategory(std::move(category));
+    return true;
 }
 
 std::unique_ptr<Todo> TodoController::get(int id) { return m_database->getTodoById(id); }
 
 std::map<int, std::shared_ptr<Todo>> TodoController::getAll() {
-    // if (m_todos.empty()) {
-    //     refreshTodos();
-    // }
 
     return m_todos;
 }
@@ -81,9 +82,6 @@ std::map<int, std::shared_ptr<Todo>> TodoController::getAllByCategory(std::share
     if (category->id != getCurrentCategory()->id) {
         refreshTodosByCategory(std::move(category));
     }
-    // if (m_todos.empty()) {
-    //     refreshTodosByCategory(std::move(category));
-    // }
 
     return m_todos;
 }
@@ -107,11 +105,6 @@ void TodoController::refreshTodosByCategory(std::shared_ptr<Category> category) 
 
 void TodoController::refreshTodos() {
     std::map<int, std::shared_ptr<Todo>> sharedPtrMap;
-
-    // for (auto& [key, uniquePtrValue] : todos) {
-    //     sharedPtrMap[key] = std::move(uniquePtrValue);  // Move unique_ptr to shared_ptr
-    // }
-
     m_todos = sharedPtrMap;
 }
 
@@ -136,13 +129,12 @@ void TodoController::addCategory(std::string category) {
 }
 
 void TodoController::deleteCategory(std::shared_ptr<Category> category) {
-    // todo change the current category, if it's the same as the one that's being deleted
-    // todo delete all todos that are connected to that category.
-    // todo maybe we keep them, but some parts like All would crash with the current structure
+    // todo we could keep the todos when we delete the category... do we want to?
     if (m_currentCategory->name == category->name) {
         setCurrentCategory(std::make_shared<Category>());
     }
-    m_database->deleteCategory(std::move(category));
+    m_database->deleteCategory(category);
+    m_database->deleteTodosByCategory(std::move(category));
     refreshCategories();
     hasChanges = true;
 }
