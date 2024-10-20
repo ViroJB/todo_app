@@ -70,8 +70,10 @@ void WindowCategoryList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<
     ImGui::SameLine();
     style->pushButton();
     if (ImGui::Button(" + ")) {
-        todoController->addCategory(std::string(inputCategory));
-        memset(inputCategory, 0, sizeof(inputCategory));
+        if (inputCategory[0] != 0) {
+            todoController->addCategory(std::string(inputCategory));
+            memset(inputCategory, 0, sizeof(inputCategory));
+        }
     }
     style->popButton();
 

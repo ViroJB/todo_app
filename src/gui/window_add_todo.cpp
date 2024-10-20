@@ -70,17 +70,6 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     style->pushButton();
     ImGui::SameLine();
     if (ImGui::Button("+ Add Todo")) {
-        // check if input is empty and if so, do nothing.
-        // if (input[0] != 0) {
-        //     auto todo = std::make_unique<Todo>();
-        //     todo->category.id = categories.at(selectedCategory)->id;
-        //     todo->category.name = categories.at(selectedCategory)->name;
-        //     todo->text = std::string(input);
-        //
-        //     todoController->add(std::move(todo));
-        //     // // empty input
-        //     memset(input, 0, sizeof(input));
-        // }
         enterPressed = true;
     }
     style->popButton();
@@ -93,7 +82,7 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
             todo->text = std::string(input);
 
             todoController->add(std::move(todo));
-            // // empty input
+            // empty input
             memset(input, 0, sizeof(input));
         }
     }
