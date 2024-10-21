@@ -14,7 +14,6 @@ set(SOURCES
         src/todo/todo_controller.cpp
         src/gui/gui.cpp
         src/gui/gui.hpp
-        #        src/commands/command_handler.cpp
         src/gui/window_todo_list.cpp
         src/gui/window_category_list.cpp
         src/gui/window_add_todo.cpp
@@ -39,6 +38,7 @@ file(COPY "${CMAKE_SOURCE_DIR}/fonts" DESTINATION "${CMAKE_BINARY_DIR}/Debug")
 file(COPY "${CMAKE_SOURCE_DIR}/fonts" DESTINATION "${CMAKE_BINARY_DIR}/Release")
 
 add_executable(todo_app
+#        WIN32
         src/main.cpp
         ${SOURCES}
 )
