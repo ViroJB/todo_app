@@ -39,14 +39,13 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
     // i hate the static int here... I hate static, get rid of it
     auto categories = todoController->getAllCategories();
     static int selectedCategory = 0;
-    if (!categories.empty()) {
-        selectedCategory = categories.begin()->first;
-    }
+
     // there is no actual category with -1, it's for All. so it can't be shown as combo item, therefor this "thing"
     if (todoController->hasChanges && todoController->getCurrentCategory()->id != -1) {
         selectedCategory = todoController->getCurrentCategory()->id;
         todoController->hasChanges = false;
     } else if (todoController->hasChanges) {
+        // todo this is fucked again... always jumps back to the first in the list...
         // right... when categories is empty, we cant do that.
         if (!todoController->getAllCategories().empty()) {
             selectedCategory = todoController->getAllCategories().begin()->first;
@@ -64,7 +63,7 @@ void WindowAddTodo::draw(std::shared_ptr<GuiStyle>& style, const std::shared_ptr
 
             if (ImGui::Selectable(category.second->name.c_str(), selected)) {
                 selectedCategory = category.second->id;
-                fmt::print("category changed: {}, id: {}\n", category.second->name, selectedCategory);
+                // fmt::print("category changed: {}, id: {}\n", category.second->name, selectedCategory);
             }
         }
 
