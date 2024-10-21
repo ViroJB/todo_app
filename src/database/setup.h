@@ -84,10 +84,36 @@ class Setup {
 
         for (auto& todo : sample_todos) {
             int completed = todo.completed;
-            std::string sql =
-                "INSERT INTO todo (category_id, text, completed) VALUES ('" +
-                std::to_string(todo.category.id) + "', '" + todo.text + "', '" + std::to_string(completed) +
-                "');";
+            std::string sql = "INSERT INTO todo (category_id, text, completed) VALUES ('" +
+                              std::to_string(todo.category.id) + "', '" + todo.text + "', '" +
+                              std::to_string(completed) + "');";
+            char* err_msg;
+            int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
+            if (rc != SQLITE_OK) {
+                std::cerr << "SQL error: " << err_msg << std::endl;
+                sqlite3_free(err_msg);
+            } else {
+                std::cout << "sample todo created successfully" << std::endl;
+            }
+        }
+    }
+
+    static void insert1000Todos(const char* db_file) {
+        sqlite3* m_db;
+        int rc = sqlite3_open(db_file, &m_db);
+        if (rc) {
+            std::cerr << "Can't open database: " << sqlite3_errmsg(m_db) << std::endl;
+        } else {
+            std::cout << "Opened database successfully" << std::endl;
+        }
+
+        Todo todo;
+        todo.category.id = 5;
+        todo.text = "one thousand times";
+        for (int i = 0; i < 1000; i++) {
+            std::string sql = "INSERT INTO todo (category_id, text, completed) VALUES ('" +
+                              std::to_string(todo.category.id) + "', '" + todo.text + "', '0');";
+
             char* err_msg;
             int rc = sqlite3_exec(m_db, sql.c_str(), NULL, 0, &err_msg);
             if (rc != SQLITE_OK) {

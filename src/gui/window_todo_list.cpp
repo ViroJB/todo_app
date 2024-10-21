@@ -10,6 +10,7 @@
 
 namespace TodoApp {
 
+// todo when a category has been deleted, reload the todos.
 void WindowTodoList::draw(std::shared_ptr<GuiStyle>& style, std::shared_ptr<TodoController>& todoController) {
     style->pushWindowTodoList();
     ImGui::Begin("Todos", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);

@@ -2,8 +2,8 @@
   "name": "vtodo",
   "version": "2.0.0",
   "dependencies": [
-    "fmt",
     "spdlog",
+    "fmt",
     "sqlite3",
     "gtest",
     "glfw3",

@@ -7,13 +7,14 @@
 namespace TodoApp {
 
 // TODO FIX ALL THIS... it works, but at what cost??
-// todo make -1 as id for category work. for example we could keep todos without category, if we delete a category
+// todo make -1 as id for category work. so we could keep todos without category, if we delete a category
 TodoController::TodoController() {
     // NOTE gotta go with the setup here I guess, for now?
     if (!std::filesystem::exists(Config::DB_FILE)) {
         Setup::run(Config::DB_FILE);
         Setup::insertExampleData(Config::DB_FILE);
     }
+    // Setup::insert1000Todos(Config::DB_FILE);
 
     m_database = std::make_unique<SqliteDB>();
     m_database->connect(Config::DB_FILE);
@@ -79,7 +80,7 @@ std::map<int, std::shared_ptr<Todo>> TodoController::getAll() {
 }
 
 std::map<int, std::shared_ptr<Todo>> TodoController::getAllByCategory(std::shared_ptr<Category> category) {
-    if (category->id != getCurrentCategory()->id) {
+    if (category->id != getCurrentCategory()->id && category->id != -1) {
         refreshTodosByCategory(std::move(category));
     }
 

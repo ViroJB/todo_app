@@ -82,9 +82,6 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodosByCategory(std::shared_pt
             // todo->dueDate = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
             todo->createdAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4)));
             todo->updatedAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)));
-            // FIXME everything goes to shit here, because there is a zero inserted in categorie.id, which should never
-            // happen..
-            // FIXME might add todos without category, maybe
             todo->category.id = category->id;
             todo->category.name = category->name;
 
@@ -250,7 +247,6 @@ std::map<int, std::unique_ptr<Todo>> SqliteDB::getTodos() {
             // todo->dueDate = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4)));
             todo->createdAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)));
             todo->updatedAt = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6)));
-            // FIXME everything goes to shit here, because there is a zero inserted in categorie.id, which should never happen..
             todo->category.name = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7)));
 
             todos.emplace(todo->id, std::move(todo));

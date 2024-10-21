@@ -10,7 +10,6 @@
 namespace TodoApp {
 
 // TODO redo most of the gui stuff. use one begin and end, and the rest with child windows.
-// TODO refactor all the style stuff to the guistyle class
 
 void Gui::init() {
     glfwSetErrorCallback(glfwErrorCallback);
@@ -70,7 +69,7 @@ void Gui::render() {
     WindowTodoList::draw(m_style, m_todoController);
     WindowAddTodo::draw(m_style, m_todoController);
 
-    // todo make this work. its probably not working because we actually use 3 different windows, not child windows..
+    // fixme its probably not working because we actually use 3 different windows, not child windows..
     // if (ImGui::IsWindowFocused()) {
     //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     // } else {
@@ -78,7 +77,7 @@ void Gui::render() {
     // }
     // ImGui::ShowDemoWindow();
     endFrame();
-
+    // glfwIconifyWindow(m_window); // minimize window
 }
 
 void Gui::startFrame() {
