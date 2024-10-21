@@ -1,21 +1,22 @@
-#include "app.h"
+#include "app.hpp"
 
-wxIMPLEMENT_APP(App);
+// #include "commands/command_handler.hpp"
 
-// TODO add categories to todo list, edit panel
-// TODO add tabs for completed and overdue tasks.
-// TODO show uncompleted tasks in the main tab by default and ordered by category.
-// TODO now: minimize to tray, notifications, ect.
+namespace TodoApp {
 
-bool App::OnInit() {
-    MainFrame* mainFrame = new MainFrame(Config::APP_NAME, wxPoint(50, 50), wxSize(450, 340));
-    mainFrame->SetMinSize(wxSize(Config::APP_MIN_WIDTH, Config::APP_MIN_HEIGHT));
-    mainFrame->Center();
-    mainFrame->Show();
-
+bool App::init() {
     return true;
 }
 
-BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_CLOSE(MainFrame::OnClose)
-END_EVENT_TABLE()
+void App::run() {
+    Gui gui;
+    gui.init();
+    const auto window = gui.getWindow();
+
+    while (!glfwWindowShouldClose(window)) {
+        gui.render();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+}  // namespace TodoApp
